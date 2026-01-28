@@ -1,40 +1,19 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Instagram, Facebook, Heart, Sparkles } from 'lucide-react';
 import ProductCard from '@/app/components/ProductCard';
 import CustomOrderSection from '@/app/components/CustomOrderSection';
+import CartSection from '@/app/components/CartSection';
+import CheckoutSection from '@/app/components/CheckoutSection';
+import OrderSuccessSection from '@/app/components/OrderSuccessSection';
 
-export default function App() {
-  const [activeSection, setActiveSection] = useState<string>('home');
+function useActivePath() {
+  const location = useLocation();
+  return location.pathname;
+}
 
-  useEffect(() => {
-    const sections = Array.from(
-      document.querySelectorAll<HTMLElement>('section[id]')
-    );
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            if (id) {
-              setActiveSection(id);
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-      }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-      observer.disconnect();
-    };
-  }, []);
+function AppShell({ children }: { children: React.ReactNode }) {
+  const activePath = useActivePath();
   const products = [
     {
       id: 1,
@@ -94,38 +73,32 @@ export default function App() {
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
-              <a
-                href="#home"
+              <Link
+                to="/"
                 className={`transition-colors hover:opacity-70 ${
-                  activeSection === 'home' ? 'font-semibold' : ''
+                  activePath === '/' ? 'font-semibold' : ''
                 }`}
                 style={{ color: '#102C57' }}
               >
                 Home
-              </a>
+              </Link>
               <a
-                href="#shop"
-                className={`transition-colors hover:opacity-70 ${
-                  activeSection === 'shop' ? 'font-semibold' : ''
-                }`}
+                href="/#shop"
+                className="transition-colors hover:opacity-70"
                 style={{ color: '#102C57' }}
               >
                 Shop
               </a>
               <a
-                href="#custom-orders"
-                className={`transition-colors hover:opacity-70 ${
-                  activeSection === 'custom-orders' ? 'font-semibold' : ''
-                }`}
+                href="/#custom-orders"
+                className="transition-colors hover:opacity-70"
                 style={{ color: '#102C57' }}
               >
                 Custom Orders
               </a>
               <a
-                href="#contact"
-                className={`transition-colors hover:opacity-70 ${
-                  activeSection === 'contact' ? 'font-semibold' : ''
-                }`}
+                href="/#contact"
+                className="transition-colors hover:opacity-70"
                 style={{ color: '#102C57' }}
               >
                 Contact
@@ -133,13 +106,128 @@ export default function App() {
             </div>
 
             {/* Cart Icon */}
-            <button className="p-2 rounded-full transition-all hover:bg-opacity-10 hover:bg-black">
+            <Link
+              to="/cart"
+              className="p-2 rounded-full transition-all hover:bg-[#FFB1B1]/20"
+            >
               <ShoppingCart className="w-6 h-6" style={{ color: '#102C57' }} />
-            </button>
+            </Link>
           </div>
         </div>
       </nav>
 
+      {children}
+
+      {/* Footer */}
+      <footer id="contact" className="py-12 px-6" style={{ backgroundColor: '#102C57' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src="/logo.png"
+                  alt="Hooked logo"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <span className="text-2xl font-pacifico text-white">Hooked</span>
+              </div>
+              <p className="text-white/70">
+                Handcrafted crochet creations made with love and care. Every stitch tells a story.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-white mb-4">Quick Links</h3>
+              <div className="flex flex-col gap-2">
+                <a href="#" className="text-white/70 hover:text-white transition-colors">About Us</a>
+                <a href="#" className="text-white/70 hover:text-white transition-colors">Shop</a>
+                <a href="#" className="text-white/70 hover:text-white transition-colors">Custom Orders</a>
+                <a href="#" className="text-white/70 hover:text-white transition-colors">Care Instructions</a>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div>
+              <h3 className="text-white mb-4">Connect With Us</h3>
+              <div className="flex gap-4">
+                <a 
+                  href="#" 
+                  className="p-3 rounded-full transition-all hover:scale-110"
+                  style={{ backgroundColor: '#FFB1B1' }}
+                >
+                  <Instagram className="w-5 h-5 text-white" />
+                </a>
+                <a 
+                  href="#" 
+                  className="p-3 rounded-full transition-all hover:scale-110"
+                  style={{ backgroundColor: '#FFB1B1' }}
+                >
+                  <Facebook className="w-5 h-5 text-white" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-white/20 text-center">
+            <p className="text-white/60">© 2026 Hooked. All rights reserved. Made with love, one stitch at a time.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function HomePage() {
+  const products = [
+    {
+      id: 1,
+      name: 'Pastel Amigurumi Bunny',
+      price: 32.0,
+      image:
+        'https://images.unsplash.com/photo-1629019317873-3f603b269723?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9jaGV0JTIwYW1pZ3VydW1pJTIwY3V0ZSUyMHRveXxlbnwxfHx8fDE3Njk2MDgzNDh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    },
+    {
+      id: 2,
+      name: 'Cozy Blanket - Pink Blush',
+      price: 68.0,
+      image:
+        'https://images.unsplash.com/photo-1705872534499-5f7ba5b1bfd6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9jaGV0JTIwYmxhbmtldCUyMHNvZnQlMjBwYXN0ZWx8ZW58MXx8fHwxNzY5NjA4MzQ5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    },
+    {
+      id: 3,
+      name: 'Handmade Crochet Bag',
+      price: 45.0,
+      image:
+        'https://images.unsplash.com/photo-1759544632264-a31a9ff1e60b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9jaGV0JTIwYmFnJTIwaGFuZG1hZGUlMjBhZXN0aGV0aWN8ZW58MXx8fHwxNzY5NjA4MzQ5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    },
+    {
+      id: 4,
+      name: 'Delicate Flower Bouquet',
+      price: 28.0,
+      image:
+        'https://images.unsplash.com/photo-1700170928599-d7fc2d4ec97f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9jaGV0JTIwZmxvd2VycyUyMGRlbGljYXRlJTIwaGFuZG1hZGV8ZW58MXx8fHwxNzY5NjA4MzUwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    },
+    {
+      id: 5,
+      name: 'Premium Yarn Set',
+      price: 52.0,
+      image:
+        'https://images.unsplash.com/photo-1690908435623-415f8e8b0759?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5YXJuJTIwcGFzdGVsJTIwY29sb3JzJTIwc29mdHxlbnwxfHx8fDE3Njk2MDgzNTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    },
+    {
+      id: 6,
+      name: 'Handmade Pink Creation',
+      price: 38.0,
+      image:
+        'https://images.unsplash.com/photo-1682953982710-1113d5c383c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9jaGV0JTIwaGFuZG1hZGUlMjBwaW5rJTIwcGFzdGVsfGVufDF8fHx8MTc2OTYwODM0OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    },
+  ];
+
+  return (
+    <>
       {/* Hero Section */}
       <motion.section 
         id="home"
@@ -254,65 +342,35 @@ export default function App() {
       <section id="custom-orders">
         <CustomOrderSection />
       </section>
+    </>
+  );
+}
 
-      {/* Footer */}
-      <footer id="contact" className="py-12 px-6" style={{ backgroundColor: '#102C57' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            {/* Brand */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src="/logo.png"
-                  alt="Hooked logo"
-                  className="h-10 w-10 rounded-full object-cover"
-                />
-                <span className="text-2xl font-pacifico text-white">Hooked</span>
-              </div>
-              <p className="text-white/70">
-                Handcrafted crochet creations made with love and care. Every stitch tells a story.
-              </p>
-            </div>
+function CartPage() {
+  return (
+    <main>
+      <CartSection />
+    </main>
+  );
+}
 
-            {/* Quick Links */}
-            <div>
-              <h3 className="text-white mb-4">Quick Links</h3>
-              <div className="flex flex-col gap-2">
-                <a href="#" className="text-white/70 hover:text-white transition-colors">About Us</a>
-                <a href="#" className="text-white/70 hover:text-white transition-colors">Shop</a>
-                <a href="#" className="text-white/70 hover:text-white transition-colors">Custom Orders</a>
-                <a href="#" className="text-white/70 hover:text-white transition-colors">Care Instructions</a>
-              </div>
-            </div>
+export default function App() {
+  const activePath = useActivePath();
+  const isCart = activePath === '/cart';
+  const isCheckout = activePath === '/checkout';
+  const isOrderSuccess = activePath === '/order-success';
 
-            {/* Social Links */}
-            <div>
-              <h3 className="text-white mb-4">Connect With Us</h3>
-              <div className="flex gap-4">
-                <a 
-                  href="#" 
-                  className="p-3 rounded-full transition-all hover:scale-110"
-                  style={{ backgroundColor: '#FFB1B1' }}
-                >
-                  <Instagram className="w-5 h-5 text-white" />
-                </a>
-                <a 
-                  href="#" 
-                  className="p-3 rounded-full transition-all hover:scale-110"
-                  style={{ backgroundColor: '#FFB1B1' }}
-                >
-                  <Facebook className="w-5 h-5 text-white" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-white/20 text-center">
-            <p className="text-white/60">© 2026 Hooked. All rights reserved. Made with love, one stitch at a time.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+  return (
+    <AppShell>
+      {isOrderSuccess ? (
+        <OrderSuccessSection />
+      ) : isCheckout ? (
+        <CheckoutSection />
+      ) : isCart ? (
+        <CartPage />
+      ) : (
+        <HomePage />
+      )}
+    </AppShell>
   );
 }
