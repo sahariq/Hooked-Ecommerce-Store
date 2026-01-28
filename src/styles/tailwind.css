@@ -2,3 +2,19 @@
 @source '../**/*.{js,ts,jsx,tsx}';
 
 @import 'tw-animate-css';
+
+/* Custom gingham background for Hooked hero/sections */
+.bg-gingham-blue {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(22, 121, 171, 0.18) 50%,
+      transparent 50%
+    ),
+    linear-gradient(
+      rgba(22, 121, 171, 0.18) 50%,
+      transparent 50%
+    );
+  background-size: 40px 40px;
+}

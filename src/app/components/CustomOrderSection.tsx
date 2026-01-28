@@ -16,8 +16,7 @@ export default function CustomOrderSection() {
 
   return (
     <section 
-      className="py-24 px-6 relative overflow-hidden"
-      style={{ backgroundColor: '#FFCBCB' }}
+      className="py-24 px-6 relative overflow-hidden bg-gingham-blue"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -77,8 +76,8 @@ export default function CustomOrderSection() {
 
           {/* Right Side - Form */}
           <div 
-            className="rounded-3xl p-8 lg:p-10 bg-white"
-            style={{ boxShadow: '0 20px 60px rgba(16, 44, 87, 0.15)' }}
+            className="rounded-[2rem] p-8 lg:p-10 bg-white/95"
+            style={{ boxShadow: '0 24px 70px rgba(16, 44, 87, 0.16)' }}
           >
             <h3 className="text-2xl mb-6" style={{ color: '#102C57' }}>
               Start Your Custom Order
@@ -98,7 +97,7 @@ export default function CustomOrderSection() {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-5 py-3 rounded-xl border-2 transition-all focus:outline-none"
+                  className="w-full px-5 py-3 rounded-2xl border-2 transition-all focus:outline-none"
                   style={{ 
                     borderColor: '#FFCBCB',
                     backgroundColor: 'white'
@@ -122,7 +121,7 @@ export default function CustomOrderSection() {
                   id="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-5 py-3 rounded-xl border-2 transition-all focus:outline-none"
+                  className="w-full px-5 py-3 rounded-2xl border-2 transition-all focus:outline-none"
                   style={{ 
                     borderColor: '#FFCBCB',
                     backgroundColor: 'white'
@@ -146,7 +145,7 @@ export default function CustomOrderSection() {
                   value={formData.details}
                   onChange={(e) => setFormData({ ...formData, details: e.target.value })}
                   rows={5}
-                  className="w-full px-5 py-3 rounded-xl border-2 transition-all focus:outline-none resize-none"
+                  className="w-full px-5 py-3 rounded-2xl border-2 transition-all focus:outline-none resize-none"
                   style={{ 
                     borderColor: '#FFCBCB',
                     backgroundColor: 'white'
@@ -159,11 +158,11 @@ export default function CustomOrderSection() {
 
               <button
                 type="submit"
-                className="w-full py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95"
+                className="w-full py-4 px-6 rounded-full flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95"
                 style={{ 
                   backgroundColor: '#1679AB',
                   color: 'white',
-                  boxShadow: '0 8px 20px rgba(22, 121, 171, 0.3)'
+                  boxShadow: '0 10px 26px rgba(22, 121, 171, 0.32)'
                 }}
               >
                 <Send className="w-5 h-5" />
@@ -179,8 +178,9 @@ export default function CustomOrderSection() {
       </div>
 
       {/* Decorative Elements */}
-      <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-white/20 blur-3xl"></div>
-      <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-white/20 blur-3xl"></div>
+      <div className="pointer-events-none absolute inset-x-0 top-16 flex justify-center">
+        <div className="h-[2px] w-48 rounded-full bg-gradient-to-r from-transparent via-[#FFB1B1]/70 to-transparent" />
+      </div>
     </section>
   );
 }

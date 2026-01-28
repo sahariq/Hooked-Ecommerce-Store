@@ -1,8 +1,40 @@
-import { ShoppingCart, Instagram, Facebook, Twitter, Heart, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
+import { ShoppingCart, Instagram, Facebook, Heart, Sparkles } from 'lucide-react';
 import ProductCard from '@/app/components/ProductCard';
 import CustomOrderSection from '@/app/components/CustomOrderSection';
 
 export default function App() {
+  const [activeSection, setActiveSection] = useState<string>('home');
+
+  useEffect(() => {
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('section[id]')
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            if (id) {
+              setActiveSection(id);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+      observer.disconnect();
+    };
+  }, []);
   const products = [
     {
       id: 1,
@@ -49,17 +81,55 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center gap-2">
-              <Heart className="w-7 h-7" style={{ color: '#FFB1B1' }} fill="#FFB1B1" />
-              <span className="text-2xl" style={{ color: '#102C57' }}>Hooked</span>
+            <div className="flex items-center gap-3">
+              <motion.img
+                src="/logo.png"
+                alt="Hooked logo"
+                className="h-10 w-10 rounded-full object-cover"
+                whileHover={{ scale: 1.05, rotate: -3 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              />
+              <span className="text-3xl font-pacifico" style={{ color: '#102C57' }}>Hooked</span>
             </div>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
-              <a href="#" className="transition-colors hover:opacity-70" style={{ color: '#102C57' }}>Home</a>
-              <a href="#" className="transition-colors hover:opacity-70" style={{ color: '#102C57' }}>Shop</a>
-              <a href="#" className="transition-colors hover:opacity-70" style={{ color: '#102C57' }}>Custom Orders</a>
-              <a href="#" className="transition-colors hover:opacity-70" style={{ color: '#102C57' }}>Contact</a>
+              <a
+                href="#home"
+                className={`transition-colors hover:opacity-70 ${
+                  activeSection === 'home' ? 'font-semibold' : ''
+                }`}
+                style={{ color: '#102C57' }}
+              >
+                Home
+              </a>
+              <a
+                href="#shop"
+                className={`transition-colors hover:opacity-70 ${
+                  activeSection === 'shop' ? 'font-semibold' : ''
+                }`}
+                style={{ color: '#102C57' }}
+              >
+                Shop
+              </a>
+              <a
+                href="#custom-orders"
+                className={`transition-colors hover:opacity-70 ${
+                  activeSection === 'custom-orders' ? 'font-semibold' : ''
+                }`}
+                style={{ color: '#102C57' }}
+              >
+                Custom Orders
+              </a>
+              <a
+                href="#contact"
+                className={`transition-colors hover:opacity-70 ${
+                  activeSection === 'contact' ? 'font-semibold' : ''
+                }`}
+                style={{ color: '#102C57' }}
+              >
+                Contact
+              </a>
             </div>
 
             {/* Cart Icon */}
@@ -71,25 +141,48 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section 
-        className="relative py-32 px-6 overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, #FFCBCB 0%, #FFB1B1 25%, #1679AB 75%, #102C57 100%)`
-        }}
+      <motion.section 
+        id="home"
+        className="relative py-32 px-6 overflow-hidden bg-gingham-blue"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
       >
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm mb-6">
-              <Sparkles className="w-4 h-4 text-white" />
-              <span className="text-sm text-white">Handcrafted with Love</span>
-            </div>
-            <h1 className="text-6xl mb-6 text-white" style={{ lineHeight: '1.1' }}>
+            <motion.div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm mb-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
+            >
+              <Sparkles className="w-4 h-4" style={{ color: '#102C57' }} />
+              <span className="text-sm" style={{ color: '#102C57' }}>Handcrafted with Love</span>
+            </motion.div>
+            <motion.h1
+              className="text-6xl mb-6"
+              style={{ lineHeight: '1.1', color: '#102C57' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.5 }}
+            >
               Cozy Creations,<br />Stitched with Care
-            </h1>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl">
+            </motion.h1>
+            <motion.p
+              className="text-xl mb-8 max-w-2xl"
+              style={{ color: '#102C57' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.5 }}
+            >
               Discover our collection of handmade crochet treasures. Each piece is lovingly crafted to bring warmth and joy to your home.
-            </p>
-            <div className="flex gap-4">
+            </motion.p>
+            <motion.div
+              className="flex gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.5 }}
+            >
               <button 
                 className="px-8 py-4 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg"
                 style={{ 
@@ -100,49 +193,81 @@ export default function App() {
                 Shop Collection
               </button>
               <button 
-                className="px-8 py-4 rounded-full bg-white/20 backdrop-blur-sm text-white transition-all hover:bg-white/30 border-2 border-white/40"
+                className="px-8 py-4 rounded-full bg-white/80 backdrop-blur-sm transition-all hover:bg-white border-2"
+                style={{ color: '#102C57', borderColor: '#102C57' }}
               >
                 Custom Order
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
         
         {/* Decorative circles */}
-        <div className="absolute top-20 right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 rounded-full bg-white/10 blur-3xl"></div>
-      </section>
+        <motion.div
+          className="absolute top-20 right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        />
+        <motion.div
+          className="absolute bottom-20 left-20 w-96 h-96 rounded-full bg-white/10 blur-3xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.6 }}
+        />
+      </motion.section>
 
-      {/* Featured Products */}
-      <section className="py-24 px-6">
+      {/* Featured Products / Shop */}
+      <section
+        id="shop"
+        className="py-24 px-6"
+        style={{ backgroundColor: '#FFF4F4' }}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl mb-4" style={{ color: '#102C57' }}>Featured Collection</h2>
+            <h2 className="text-4xl mb-4" style={{ color: '#102C57' }}>
+              Featured Collection
+            </h2>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: '#1679AB' }}>
-              Handpicked favorites from our artisan collection
+              Handpicked favorites laid out like a cozy craft table
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {products.map((product, index) => (
+              <div
+                key={product.id}
+                className="transition-transform"
+                style={{
+                  transform:
+                    index % 2 === 0 ? 'rotate(0.3deg)' : 'rotate(-0.3deg)',
+                }}
+              >
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Custom Order Section */}
-      <CustomOrderSection />
+      <section id="custom-orders">
+        <CustomOrderSection />
+      </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6" style={{ backgroundColor: '#102C57' }}>
+      <footer id="contact" className="py-12 px-6" style={{ backgroundColor: '#102C57' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Heart className="w-6 h-6" style={{ color: '#FFB1B1' }} fill="#FFB1B1" />
-                <span className="text-xl text-white">Hooked</span>
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src="/logo.png"
+                  alt="Hooked logo"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <span className="text-2xl font-pacifico text-white">Hooked</span>
               </div>
               <p className="text-white/70">
                 Handcrafted crochet creations made with love and care. Every stitch tells a story.
@@ -177,13 +302,6 @@ export default function App() {
                   style={{ backgroundColor: '#FFB1B1' }}
                 >
                   <Facebook className="w-5 h-5 text-white" />
-                </a>
-                <a 
-                  href="#" 
-                  className="p-3 rounded-full transition-all hover:scale-110"
-                  style={{ backgroundColor: '#FFB1B1' }}
-                >
-                  <Twitter className="w-5 h-5 text-white" />
                 </a>
               </div>
             </div>

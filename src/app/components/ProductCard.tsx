@@ -18,17 +18,17 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div 
-      className="group relative rounded-3xl overflow-hidden bg-white transition-all duration-300 hover:-translate-y-2"
+      className="group relative rounded-[1.75rem] overflow-hidden bg-white/95 transition-all duration-300 hover:-translate-y-2"
       style={{ 
         boxShadow: isHovered 
-          ? '0 20px 40px rgba(16, 44, 87, 0.15)' 
-          : '0 8px 24px rgba(16, 44, 87, 0.08)'
+          ? '0 22px 45px rgba(16, 44, 87, 0.16)' 
+          : '0 10px 28px rgba(16, 44, 87, 0.10)'
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative aspect-square overflow-hidden bg-gray-100">
+      <div className="relative aspect-square overflow-hidden bg-[#FFCBCB]/30">
         <img 
           src={product.image} 
           alt={product.name}
@@ -38,7 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Wishlist Button */}
         <button
           onClick={() => setIsLiked(!isLiked)}
-          className="absolute top-4 right-4 p-3 rounded-full bg-white/90 backdrop-blur-sm transition-all hover:scale-110 active:scale-95"
+          className="absolute top-4 right-4 p-3 rounded-full bg-white/95 backdrop-blur-sm transition-all hover:scale-110 active:scale-95 border border-[#FFB1B1]/60"
           style={{
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
           }}
@@ -59,7 +59,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           }}
         >
           <button 
-            className="w-full py-3 px-6 rounded-full bg-white/95 backdrop-blur-sm flex items-center justify-center gap-2 transition-all hover:bg-white"
+            className="w-full py-3 px-6 rounded-full bg-[#FFCBCB]/80 backdrop-blur-sm flex items-center justify-center gap-2 transition-all hover:bg-[#FFCBCB]"
             style={{ 
               color: '#102C57',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
